@@ -21,7 +21,7 @@ router.post('/login',  async function(req,res){
       
     const display_name=req.body.displayname;
     const reg_id=parseInt(req.body.regId);
-    const result= await client.db('exams').collection('Student').findOne({reg_id:reg_id});
+    const result= await client.db('exam').collection('Student').findOne({reg_id:reg_id});
     if(result){
     
     
@@ -31,7 +31,7 @@ router.post('/login',  async function(req,res){
     }
     else{
         
-    const student=await client.db('exams').collection('Student').insertOne({display_name,
+    const student=await client.db('exam').collection('Student').insertOne({display_name,
     reg_id})
     res.json(student)
    
@@ -43,7 +43,7 @@ router.post('/login',  async function(req,res){
  
 router.get('/exam',  async function(req,res){
     try{
-    const questions= client.db('exams').collection('QuestionEng').find({})
+    const questions= client.db('exam').collection('Question').find({})
     const value=await questions.toArray();
     
     res.json(value)
@@ -56,7 +56,7 @@ router.get('/exam',  async function(req,res){
 router.post('/getscores', async function(req,res){
     
     const reg_id=parseInt(req.body.reg_id)
-    const scorefind= await client.db('exams').collection('Scores').findOne({reg_id:reg_id});
+    const scorefind= await client.db('exam').collection('Scores').findOne({reg_id:reg_id});
         console.log(scorefind);
     
         res.json(scorefind)
@@ -69,7 +69,7 @@ router.post('/getscores', async function(req,res){
 router.post('/scores', async function(req,res){
     const score=parseInt(req.body.scores)
     const reg_id=parseInt(req.body.reg_id)
-    const scorefind= await client.db('exams').collection('Scores').findOne({reg_id:reg_id});
+    const scorefind= await client.db('exam').collection('Scores').findOne({reg_id:reg_id});
     if(scorefind){
     
         let myquery = { reg_id:reg_id};
@@ -79,7 +79,7 @@ router.post('/scores', async function(req,res){
         res.json("Scores succesfully Updated");
     }
     else{
-        const scorestore=await client.db('exams').collection('Scores').insertOne({reg_id,
+        const scorestore=await client.db('exam').collection('Scores').insertOne({reg_id,
             score});
             res.json("Scores succesfully Updated");
     }
