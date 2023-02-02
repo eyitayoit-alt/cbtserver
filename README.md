@@ -13,3 +13,5 @@ It fetch questions from a database of questions
 
 **Scores End Point**
 Store user scores on first attempt, update on subsequent attempt
+
+## Run npm install or yarn add to get started
