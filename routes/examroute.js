@@ -1,7 +1,7 @@
 
 var express = require('express');
 const router = express.Router();
-const session = require('express-session');
+let session=require("express-session")
 // This will help us connect to the database
 const ObjectId = require("mongodb").ObjectId;
 //const connect =require ('../db/conn')
@@ -10,10 +10,9 @@ const { Student,Subject,Scores } = require( '../models/model');
 const dbo = require("../db/connection")
 const client=dbo.client
 const db=dbo.dbConnect()
-
-
+var sess;
 function isLoggedIn(req, res, next) {
-    if(req.session) return next();
+    if(sess.reg_id) return next();
     res.json("Unauthorised Access")
   }
 
@@ -25,15 +24,18 @@ router.post('/login',  async function(req,res){
     if(result){
     
     
-        
-     
+        sess=req.session
+        sess.reg_id=result.reg_id
         res.json(result)
     }
     else{
         
     const student=await client.db('exams').collection('Student').insertOne({display_name,
     reg_id})
+    sess=req.session
+    sess.reg_id=result.reg_id
     res.json(student)
+    
    
     };
    
@@ -41,7 +43,7 @@ router.post('/login',  async function(req,res){
    
 })
  
-router.get('/exam',  async function(req,res){
+router.get('/exam',isLoggedIn,  async function(req,res){
     try{
     const questions= client.db('exams').collection('QuestionEng').find({})
     const value=await questions.toArray();
@@ -53,7 +55,7 @@ router.get('/exam',  async function(req,res){
     }
 
 })
-router.post('/getscores', async function(req,res){
+router.post('/getscores',isLoggedIn, async function(req,res){
     
     const reg_id=parseInt(req.body.reg_id)
     const scorefind= await client.db('exams').collection('Scores').findOne({reg_id:reg_id});
@@ -66,7 +68,7 @@ router.post('/getscores', async function(req,res){
     
 
 })
-router.post('/scores', async function(req,res){
+router.post('/scores',isLoggedIn, async function(req,res){
     const score=parseInt(req.body.scores)
     const reg_id=parseInt(req.body.reg_id)
     const scorefind= await client.db('exams').collection('Scores').findOne({reg_id:reg_id});
@@ -88,4 +90,8 @@ router.post('/scores', async function(req,res){
 
 })
 
+router.get("/logout",(req,res)=>{
+    req.session.destroy()
+    res.json("succesfully Logout")
+})
 module.exports= router

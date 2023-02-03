@@ -1,7 +1,7 @@
 db = connect('mongodb://localhost/exams')
 
 
-db.QuestionEng.insertMany([
+db.Question.insertMany([
 
     {  
         Passage: "",

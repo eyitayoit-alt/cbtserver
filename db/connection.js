@@ -11,11 +11,18 @@ const { MongoClient } = require('mongodb');
     useUnifiedTopology: true,
    
   });
-  async function dbConnect(){
+  async function dbConnect()
+  { try{
+ 
     console.log("connected to Database")
     return  await client.connect()
     
   }
+
+catch(error){
+console.log(error)
+}
+}
 
 
 
