@@ -90,7 +90,7 @@ router.post('/scores',isLoggedIn, async function(req,res){
 
 })
 
-router.get("/logout",(req,res)=>{
+router.get('/logout',(req,res)=>{
     req.session.destroy()
     res.json("succesfully Logout")
 })
