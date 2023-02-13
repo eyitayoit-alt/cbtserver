@@ -20,7 +20,7 @@ app.use(session({
   saveUninitialized: true,
   store: mongoStore.create({
     mongoUrl:process.env.URI ,
-    touchAfter: 24 * 3600
+    touchAfter: 2 * 3600
   })
 
 }));
