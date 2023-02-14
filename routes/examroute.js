@@ -41,7 +41,7 @@ router.post('/login',  async function(req,res){
    
 })
  
-router.get('/exams',  async function(req,res){
+router.get('/exam',  async function(req,res){
     try{
     const questions= client.db('exams').collection('QuestionEng').find({})
     const value=await questions.toArray();
